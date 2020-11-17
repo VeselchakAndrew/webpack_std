@@ -1,7 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
-module.exports = {
+const { merge } = require("webpack-merge");
+
+const baseConfig = require("./webpack.config.base");
+
+module.exports = merge(baseConfig, {
 	mode: "development",
 	entry: "./src/index.js",
 	output: {
@@ -9,32 +13,7 @@ module.exports = {
 		path: path.resolve(__dirname, "public"),
 		publicPath: "/",
 	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: ["/node_modules/"],
-				use: [
-					{
-						loader: "babel-loader",
-						options: {
-							presets: [
-								"@babel/preset-react",
-								[
-									"@babel/env",
-									{
-										targets: {
-											browsers: ["last 7 versions"],
-										},
-									},
-								],
-							],
-						},
-					},
-				],
-			},
-		],
-	},
+
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: "./index.html",
@@ -50,4 +29,4 @@ module.exports = {
 		overlay: true,
 	},
 	devtool: "inline-source-map",
-};
+});
